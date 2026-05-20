@@ -3,8 +3,8 @@ import requests
 
 _COMPASS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW']
 
-LAT = float(os.environ.get('WEATHER_LAT', '37.781714'))
-LON = float(os.environ.get('WEATHER_LON', '-122.183481'))
+LAT = float(os.environ.get('WEATHER_LAT', '42.3398'))
+LON = float(os.environ.get('WEATHER_LON', '-71.0892'))
 
 
 def get_weather():

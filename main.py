@@ -88,7 +88,7 @@ def build_html(weather, whoop, events, assignments, news, quote):
         vis_str = f'{weather["visibility_miles"]}+ mi' if weather['visibility_miles'] >= 10 else f'{weather["visibility_miles"]} mi'
         weather_html = f'''
     <div style="background:white;border-radius:12px;padding:20px;margin-bottom:16px;">
-      <h2 style="margin:0 0 14px;font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Weather — Bay Area</h2>
+      <h2 style="margin:0 0 14px;font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Weather — Boston, MA</h2>
       <p style="margin:0 0 4px;font-size:22px;font-weight:700;color:#111;">{weather["temp"]}°F &nbsp;·&nbsp; {weather["description"]}</p>
       <p style="margin:0 0 14px;font-size:14px;color:#555;">High {weather["high"]}° &nbsp;·&nbsp; Low {weather["low"]}° &nbsp;·&nbsp; Humidity {weather["humidity"]}%</p>
       <div style="background:#f4f4f5;border-radius:8px;padding:12px 16px;">
