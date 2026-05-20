@@ -1,0 +1,53 @@
+name: Morning Briefing
+
+on:
+  workflow_dispatch:
+    inputs:
+      trigger_source:
+        description: 'whoop-webhook or manual'
+        required: false
+        default: manual
+
+jobs:
+  send-briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run briefing
+        env:
+          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+          GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
+          WHOOP_CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
+          WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
+          WHOOP_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
+          COLLEGE_DASHBOARD_URL: ${{ secrets.COLLEGE_DASHBOARD_URL }}
+          COLLEGE_DASHBOARD_API_KEY: ${{ secrets.COLLEGE_DASHBOARD_API_KEY }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python main.py
+
+      - name: Persist refreshed WHOOP token
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -f .whoop_refresh_token ]; then
+            gh secret set WHOOP_REFRESH_TOKEN --body "$(cat .whoop_refresh_token)" --repo ${{ github.repository }}
+          fi
+
+      - name: Persist refreshed Google Calendar token
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -f .google_token.json ]; then
+            gh secret set GOOGLE_CALENDAR_TOKEN --body "$(cat .google_token.json)" --repo ${{ github.repository }}
+          fi
